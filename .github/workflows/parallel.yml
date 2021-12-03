@@ -1,5 +1,6 @@
 # reusable workflow to install NPM dependencies
 # and run Cypress tests across N machines in parallel
+# https://docs.github.com/en/actions/learn-github-actions/reusing-workflows
 name: parallel
 on:
   workflow_call:
@@ -9,6 +10,10 @@ on:
         type: number
         required: true
         default: 1
+    secrets:
+      recordKey:
+        description: 'Cypress Dashboard Record Key'
+        required: true
 
 jobs:
   prepare:
@@ -29,7 +34,8 @@ jobs:
       - name: Print result 🖨
         run: echo '${{ steps.prepare.outputs.matrix }}'
 
-  # the N parallel jobs we create
+  # the N parallel testing jobs we create
+  # https://github.com/cypress-io/github-action#parallel
   test:
     needs: prepare
     runs-on: ubuntu-20.04
@@ -37,4 +43,17 @@ jobs:
       fail-fast: false
       matrix: ${{fromJSON(needs.prepare.outputs.matrix)}}
     steps:
-      - run: echo "Building ..."
+      - name: Checkout 🛎
+        uses: actions/checkout@v2
+
+      # because of "record" and "parallel" parameters
+      # these containers will load balance all found tests among themselves
+      - name: Cypress tests 🧪
+        uses: cypress-io/github-action@v2
+        with:
+          record: true
+          parallel: true
+          group: 'Parallel tests'
+        env:
+          # pass the Dashboard record key as an environment variable
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}

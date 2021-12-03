@@ -1,5 +1,6 @@
-# checks out the source code,
+# This is a reusable workflow that checks out the source code,
 # installs dependencies and runs Cypress tests on a single machine
+# https://docs.github.com/en/actions/learn-github-actions/reusing-workflows
 name: standard
 on: workflow_call
 
