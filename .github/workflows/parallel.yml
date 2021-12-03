@@ -18,9 +18,6 @@ jobs:
     outputs:
       matrix: ${{ steps.prepare.outputs.matrix }}
     steps:
-      - name: Checkout 🛎
-        uses: actions/checkout@v2
-
       # generate the list using a bash script
       - name: Create matrix ⊹
         id: prepare
@@ -31,3 +28,13 @@ jobs:
 
       - name: Print result 🖨
         run: echo '${{ steps.prepare.outputs.matrix }}'
+
+  # the N parallel jobs we create
+  test:
+    needs: prepare
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix: ${{fromJSON(needs.prepare.outputs.matrix)}}
+    steps:
+      - run: echo "Building ..."
