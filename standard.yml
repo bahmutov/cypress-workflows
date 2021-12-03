@@ -1,0 +1,15 @@
+# checks out the source code,
+# installs dependencies and runs Cypress tests on a single machine
+name: standard
+on: workflow_call
+
+jobs:
+  standard:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v2
+
+      - name: Cypress tests 🧪
+        # https://github.com/cypress-io/github-action
+        uses: cypress-io/github-action@v2
