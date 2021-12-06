@@ -10,6 +10,109 @@ on:
         type: number
         required: true
         default: 1
+      # standard parameters
+      config:
+        description: 'Set configuration values. Separate multiple values with a comma. The values set here override any values set in your configuration file.'
+        type: boolean
+        required: false
+      config-file:
+        description: 'Path to a JSON file where configuration values are set.'
+        type: string
+        required: false
+        default: cypress.json
+      env:
+        description: 'Sets Cypress environment variables'
+        type: string
+        required: false
+      browser:
+        description: 'Name of the browser to use'
+        type: string
+        required: false
+      command:
+        description: 'Command that overrides cypress run'
+        type: string
+        required: false
+      start:
+        description: 'Command for starting local server in the background'
+        type: string
+        required: false
+      start-windows:
+        description: 'A different start command on Windows'
+        type: string
+        required: false
+      build:
+        description: 'Command to run in build step before starting tests'
+        type: string
+        required: false
+      install:
+        description: 'Whether or not to run install'
+        type: boolean
+        required: false
+        default: true
+      install-command:
+        description: 'Custom install command to use'
+        type: string
+        required: false
+      runTests:
+        description: 'Whether or not to run tests'
+        type: boolean
+        required: false
+        default: true
+      wait-on:
+        description: 'Local server URL to wait for'
+        type: string
+        required: false
+      wait-on-timeout:
+        description: 'Amount of time to wait for wait-on url to be available'
+        type: number
+        required: false
+      parallel:
+        description: 'Whether or not to load balance tests using multiple containers'
+        type: boolean
+        required: false
+      group:
+        description: 'Group setting for tests'
+        type: string
+        required: false
+      tag:
+        description: 'Tag setting for tests'
+        type: string
+        required: false
+      working-directory:
+        description: 'Working directory containing Cypress folder'
+        type: string
+        required: false
+      headless:
+        description: 'Whether or not to use headless mode'
+        type: boolean
+        required: false
+      spec:
+        description: 'Provide a specific specs to run'
+        type: string
+        required: false
+      project:
+        description: 'Path of project to run'
+        type: string
+        required: false
+      command-prefix:
+        description: 'You can prefix the default test command using the command-prefix option.'
+        type: string
+        required: false
+      ci-build-id:
+        description: 'ID associates multiple CI machines to one test run'
+        type: string
+        required: false
+      cache-key:
+        description: 'Custom cache key'
+        type: string
+        required: false
+      quiet:
+        description: 'Whether or not to silence any Cypress specific output from stdout'
+        type: boolean
+        required: false
+        default: false
+
+    # to tie all tests into a single recorded run, need the Dashboard key
     secrets:
       recordKey:
         description: 'Cypress Dashboard Record Key'
@@ -53,7 +156,30 @@ jobs:
         with:
           record: true
           parallel: true
-          group: 'Parallel tests'
+          # pass the rest of workflow parameters
+          config: ${{ inputs.config }}
+          config-file: ${{ inputs.config-file }}
+          env: ${{ inputs.env }}
+          browser: ${{ inputs.browser }}
+          command: ${{ inputs.command }}
+          start: ${{ inputs.start }}
+          start-windows: ${{ inputs.start-windows }}
+          build: ${{ inputs.build }}
+          install: ${{ inputs.install }}
+          install-command: ${{ inputs.install-command }}
+          runTests: ${{ inputs.runTests }}
+          wait-on: ${{ inputs.wait-on }}
+          wait-on-timeout: ${{ inputs.wait-on-timeout }}
+          group: ${{ inputs.group }}
+          tag: ${{ inputs.tag }}
+          working-directory: ${{ inputs.working-directory }}
+          headless: ${{ inputs.headless }}
+          spec: ${{ inputs.spec }}
+          project: ${{ inputs.project }}
+          command-prefix: ${{ inputs.command-prefix }}
+          ci-build-id: ${{ inputs.ci-build-id }}
+          cache-key: ${{ inputs.cache-key }}
+          quiet: ${{ inputs.quiet }}
         env:
           # pass the Dashboard record key as an environment variable
           CYPRESS_RECORD_KEY: ${{ secrets.recordKey }}

@@ -28,6 +28,8 @@ Result:
 - [standard.yml](./.github/workflows/standard.yml) checks out code, installs dependencies, and runs tests on a single machine
 - [parallel.yml](./.github/workflows/parallel.yml) lets you specify the number if test machines to use
 
+The workflows allow passing pretty much all [Cypress GH Action](https://github.com/cypress-io/github-action) parameters, see the individual workflow YML file.
+
 ## Versions
 
 Advice: use an explicit [release tag](https://github.com/bahmutov/cypress-workflows/releases) when using a workflow like `parallel.yml@v1.0.1`. You might also use the latest release from the major branch `v1` like `parallel.yml@v1`. Not recommended: using the latest commit on the branch `parallel.yml@main` or using a specific commit `parallel.yml@2a9d460`.
