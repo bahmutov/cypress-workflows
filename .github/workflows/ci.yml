@@ -19,7 +19,7 @@ jobs:
         id: semantic
         with:
           branch: main
-          dry_run: true
+          dry_run: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
