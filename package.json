@@ -1,0 +1,35 @@
+{
+  "name": "cypress-workflows",
+  "version": "0.0.0-development",
+  "description": "Reusable Cypress workflows for GitHub Actions",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "semantic-release": "semantic-release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bahmutov/cypress-workflows.git"
+  },
+  "keywords": [
+    "github-actions",
+    "cypress",
+    "workflows"
+  ],
+  "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bahmutov/cypress-workflows/issues"
+  },
+  "homepage": "https://github.com/bahmutov/cypress-workflows#readme",
+  "release": {
+    "npmPublish": false,
+    "branches": [
+      "main"
+    ]
+  },
+  "devDependencies": {
+    "semantic-release": "^18.0.1"
+  }
+}
