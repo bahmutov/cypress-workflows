@@ -5,6 +5,21 @@ Call these workflows from your GitHub Action workflows, a single line (with para
 
 ## Example
 
+Check out the source code, install and cache dependencies, and run all Cypress specs using the following workflow
+
+```yml
+name: ci
+on: [push]
+jobs:
+  test:
+    # use the reusable workflow to check out the code, install dependencies
+    # and run the Cypress tests
+    # https://github.com/bahmutov/cypress-workflows
+    uses: bahmutov/cypress-workflows/.github/workflows/standard.yml@v1
+```
+
+## Parallel example
+
 Let's split all tests across 3 machines using [Cypress Parallelization](https://on.cypress.io/parallelization)
 
 ```yml
@@ -12,6 +27,7 @@ name: ci
 on: [push]
 jobs:
   test:
+    # https://github.com/bahmutov/cypress-workflows
     uses: bahmutov/cypress-workflows/.github/workflows/parallel.yml@v1
     with:
       n: 3
@@ -38,6 +54,7 @@ Advice: use an explicit [release tag](https://github.com/bahmutov/cypress-workfl
 
 - [bahmutov/cypress-workflows-example](https://github.com/bahmutov/cypress-workflows-example) shows how to use the standard and the parallel workflows
 - [cypress-3rd-party-script-example](https://github.com/bahmutov/cypress-3rd-party-script-example) shows how to run the end-to-end tests using the standard workflow before deploying the site
+- [cypress-wordle](https://github.com/bahmutov/cypress-wordle)
 
 ## Small print
 
