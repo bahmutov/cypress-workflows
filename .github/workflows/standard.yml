@@ -112,11 +112,6 @@ on:
         type: boolean
         required: false
         default: false
-      timeout-minutes:
-        description: 'Maximum E2E job duration in minutes',
-        type: number
-        required: false
-        default: 30
 
     secrets:
       recordKey:
@@ -126,7 +121,6 @@ on:
 jobs:
   standard:
     runs-on: ubuntu-20.04
-    timeout-minutes: ${{ inputs.timeout-minutes }}
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v2
