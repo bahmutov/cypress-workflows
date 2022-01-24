@@ -112,6 +112,11 @@ on:
         type: boolean
         required: false
         default: false
+      timeout-minutes:
+        description: 'Maximum E2E job duration in minutes',
+        type: number
+        required: false
+        default: 30
 
     secrets:
       recordKey:
@@ -128,6 +133,7 @@ jobs:
       - name: Cypress tests 🧪
         # https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v2
+        timeout-minutes: ${{ inputs.timeout-minutes }}
         with:
           record: ${{ inputs.record }}
           config: ${{ inputs.config }}

@@ -18,6 +18,25 @@ jobs:
     uses: bahmutov/cypress-workflows/.github/workflows/standard.yml@v1
 ```
 
+## Record the run
+
+To record the test run on the Cypress Dashboard, pass the options to the workflow and the record key as a secret
+
+```yml
+name: ci
+on: [push]
+jobs:
+  test:
+    # use the reusable workflow to check out the code, install dependencies
+    # and run the Cypress tests
+    # https://github.com/bahmutov/cypress-workflows
+    uses: bahmutov/cypress-workflows/.github/workflows/standard.yml@v1
+    with:
+      record: true
+    secrets:
+      recordKey: ${{ secrets.CYPRESS_RECORD_KEY }}
+```
+
 ## Parallel example
 
 Let's split all tests across 3 machines using [Cypress Parallelization](https://on.cypress.io/parallelization)
