@@ -126,6 +126,7 @@ on:
 jobs:
   standard:
     runs-on: ubuntu-20.04
+    timeout-minutes: ${{ inputs.timeout-minutes }}
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v2
@@ -133,7 +134,6 @@ jobs:
       - name: Cypress tests 🧪
         # https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v2
-        timeout-minutes: ${{ inputs.timeout-minutes }}
         with:
           record: ${{ inputs.record }}
           config: ${{ inputs.config }}
