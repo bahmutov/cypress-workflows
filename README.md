@@ -74,6 +74,7 @@ Advice: use an explicit [release tag](https://github.com/bahmutov/cypress-workfl
 - [bahmutov/cypress-workflows-example](https://github.com/bahmutov/cypress-workflows-example) shows how to use the standard and the parallel workflows
 - [cypress-3rd-party-script-example](https://github.com/bahmutov/cypress-3rd-party-script-example) shows how to run the end-to-end tests using the standard workflow before deploying the site
 - [cypress-wordle](https://github.com/bahmutov/cypress-wordle)
+- [react-app-actions](https://github.com/bahmutov/react-app-actions) shows how to run the tests using a workflow and then release a new version using semantic release step
 
 ## Small print
 
