@@ -66,6 +66,8 @@ on:
         description: 'Amount of time to wait for wait-on url to be available'
         type: number
         required: false
+        # default is 60 seconds
+        default: 60
       parallel:
         description: 'Whether or not to load balance tests using multiple containers'
         type: boolean
