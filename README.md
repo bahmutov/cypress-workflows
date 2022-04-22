@@ -76,6 +76,7 @@ Advice: use an explicit [release tag](https://github.com/bahmutov/cypress-workfl
 - [cypress-wordle](https://github.com/bahmutov/cypress-wordle)
 - [react-app-actions](https://github.com/bahmutov/react-app-actions) shows how to run the tests using a workflow and then release a new version using semantic release step
 - [bahmutov/cypress-recurse](https://github.com/bahmutov/cypress-recurse)
+- [bahmutov/my-svelte-app](https://github.com/bahmutov/my-svelte-app)
 
 ## Small print
 
