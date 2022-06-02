@@ -77,6 +77,7 @@ Advice: use an explicit [release tag](https://github.com/bahmutov/cypress-workfl
 - [react-app-actions](https://github.com/bahmutov/react-app-actions) shows how to run the tests using a workflow and then release a new version using semantic release step
 - [bahmutov/cypress-recurse](https://github.com/bahmutov/cypress-recurse)
 - [bahmutov/my-svelte-app](https://github.com/bahmutov/my-svelte-app)
+- [bahmutov/sudoku-testing-v10](https://github.com/bahmutov/sudoku-testing-v10) runs E2E and component tests using Cypress v10
 
 ## Small print
 
