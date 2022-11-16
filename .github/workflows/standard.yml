@@ -20,7 +20,6 @@ on:
         description: 'Path to a JSON file where configuration values are set.'
         type: string
         required: false
-        default: cypress.json
       env:
         description: 'Sets Cypress environment variables'
         type: string
