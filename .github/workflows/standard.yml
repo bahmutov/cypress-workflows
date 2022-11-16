@@ -85,8 +85,8 @@ on:
         description: 'Working directory containing Cypress folder'
         type: string
         required: false
-      headless:
-        description: 'Whether or not to use headless mode'
+      headed:
+        description: 'Whether or not to use the headed mode'
         type: boolean
         required: false
       spec:
@@ -125,11 +125,11 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Cypress tests 🧪
         # https://github.com/cypress-io/github-action
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           record: ${{ inputs.record }}
           config: ${{ inputs.config }}
@@ -149,7 +149,7 @@ jobs:
           group: ${{ inputs.group }}
           tag: ${{ inputs.tag }}
           working-directory: ${{ inputs.working-directory }}
-          headless: ${{ inputs.headless }}
+          headed: ${{ inputs.headed }}
           spec: ${{ inputs.spec }}
           project: ${{ inputs.project }}
           command-prefix: ${{ inputs.command-prefix }}

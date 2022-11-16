@@ -84,8 +84,8 @@ on:
         description: 'Working directory containing Cypress folder'
         type: string
         required: false
-      headless:
-        description: 'Whether or not to use headless mode'
+      headed:
+        description: 'Whether or not to use headed mode'
         type: boolean
         required: false
       spec:
@@ -149,12 +149,12 @@ jobs:
       matrix: ${{fromJSON(needs.prepare.outputs.matrix)}}
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # because of "record" and "parallel" parameters
       # these containers will load balance all found tests among themselves
       - name: Cypress tests 🧪
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           record: true
           parallel: true
@@ -175,7 +175,7 @@ jobs:
           group: ${{ inputs.group }}
           tag: ${{ inputs.tag }}
           working-directory: ${{ inputs.working-directory }}
-          headless: ${{ inputs.headless }}
+          headed: ${{ inputs.headed }}
           spec: ${{ inputs.spec }}
           project: ${{ inputs.project }}
           command-prefix: ${{ inputs.command-prefix }}
