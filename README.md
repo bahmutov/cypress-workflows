@@ -37,6 +37,21 @@ jobs:
       recordKey: ${{ secrets.CYPRESS_RECORD_KEY }}
 ```
 
+## Split example
+
+Let's split all specs across 3 machines using [cypress-split](https://github.com/bahmutov/cypress-split) plugin. Configure the plugin using its documentation, then use this workflow:
+
+```yml
+name: ci
+on: [push]
+jobs:
+  test:
+    # https://github.com/bahmutov/cypress-workflows
+    uses: bahmutov/cypress-workflows/.github/workflows/split.yml@v1
+    with:
+      n: 3
+```
+
 ## Parallel example
 
 Let's split all tests across 3 machines using [Cypress Parallelization](https://on.cypress.io/parallelization)
@@ -61,7 +76,8 @@ Result:
 ## Workflows
 
 - [standard.yml](./.github/workflows/standard.yml) checks out code, installs dependencies, and runs tests on a single machine
-- [parallel.yml](./.github/workflows/parallel.yml) lets you specify the number if test machines to use
+- [split.yml](./.github/workflows/split.yml) checks out the coe, installs dependencies, splits specs per machine using [cypress-split](https://github.com/bahmutov/cypress-split) plugin.
+- [parallel.yml](./.github/workflows/parallel.yml) lets you specify the number if test machines to use. Splits specs using Cypress Dashboard
 
 The workflows allow passing pretty much all [Cypress GH Action](https://github.com/cypress-io/github-action) parameters, see the individual workflow YML file.
 
