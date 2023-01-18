@@ -1,0 +1,153 @@
+# reusable workflow to install NPM dependencies
+# and run Cypress tests across N machines in using cypress-split
+# https://github.com/bahmutov/cypress-split
+name: split
+on:
+  workflow_call:
+    inputs:
+      n:
+        description: 'Number of parallel containers'
+        type: number
+        required: true
+        default: 1
+      # standard parameters
+      config:
+        description: 'Set configuration values. Separate multiple values with a comma. The values set here override any values set in your configuration file.'
+        type: string
+        required: false
+      config-file:
+        description: 'Path to a JSON file where configuration values are set.'
+        type: string
+        required: false
+      env:
+        description: 'Sets Cypress environment variables'
+        type: string
+        required: false
+      browser:
+        description: 'Name of the browser to use'
+        type: string
+        required: false
+      command:
+        description: 'Command that overrides cypress run'
+        type: string
+        required: false
+      start:
+        description: 'Command for starting local server in the background'
+        type: string
+        required: false
+      start-windows:
+        description: 'A different start command on Windows'
+        type: string
+        required: false
+      build:
+        description: 'Command to run in build step before starting tests'
+        type: string
+        required: false
+      install:
+        description: 'Whether or not to run install'
+        type: boolean
+        required: false
+        default: true
+      install-command:
+        description: 'Custom install command to use'
+        type: string
+        required: false
+      runTests:
+        description: 'Whether or not to run tests'
+        type: boolean
+        required: false
+        default: true
+      wait-on:
+        description: 'Local server URL to wait for'
+        type: string
+        required: false
+      wait-on-timeout:
+        description: 'Amount of time to wait for wait-on url to be available'
+        type: number
+        required: false
+        # default is 60 seconds
+        default: 60
+      working-directory:
+        description: 'Working directory containing Cypress folder'
+        type: string
+        required: false
+      headed:
+        description: 'Whether or not to use headed mode'
+        type: boolean
+        required: false
+      spec:
+        description: 'Provide a specific specs to run'
+        type: string
+        required: false
+      project:
+        description: 'Path of project to run'
+        type: string
+        required: false
+      command-prefix:
+        description: 'You can prefix the default test command using the command-prefix option.'
+        type: string
+        required: false
+      cache-key:
+        description: 'Custom cache key'
+        type: string
+        required: false
+      quiet:
+        description: 'Whether or not to silence any Cypress specific output from stdout'
+        type: boolean
+        required: false
+        default: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-20.04
+    # explicitly set the output of this job
+    # so that other jobs can use it
+    outputs:
+      matrix: ${{ steps.prepare.outputs.matrix }}
+    steps:
+      # generate the list using a bash script
+      - name: Create container matrix ⊹
+        id: prepare
+        # for reusable workflow, must use the full action reference
+        uses: bahmutov/gh-build-matrix@main
+        with:
+          n: ${{ inputs.n }} # number of containers to output
+
+      - name: Print result 🖨
+        run: echo '${{ steps.prepare.outputs.matrix }}'
+
+  # the N parallel testing jobs we create
+  tests:
+    needs: prepare
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      # these containers will load balance all found tests among themselves
+      - name: Cypress tests 🧪
+        uses: cypress-io/github-action@v5
+        # pass the machine index and the total number
+        # https://github.com/bahmutov/cypress-split
+        env:
+          SPLIT: ${{ strategy.job-total }}
+          SPLIT_INDEX: ${{ strategy.job-index }}
+        with:
+          command: npx cypress run
+          start: ${{ inputs.start }}
+          start-windows: ${{ inputs.start-windows }}
+          install: ${{ inputs.install }}
+          install-command: ${{ inputs.install-command }}
+          runTests: ${{ inputs.runTests }}
+          wait-on: ${{ inputs.wait-on }}
+          wait-on-timeout: ${{ inputs.wait-on-timeout }}
+          working-directory: ${{ inputs.working-directory }}
+          headed: ${{ inputs.headed }}
+          spec: ${{ inputs.spec }}
+          project: ${{ inputs.project }}
+          command-prefix: ${{ inputs.command-prefix }}
+          cache-key: ${{ inputs.cache-key }}
+          quiet: ${{ inputs.quiet }}
