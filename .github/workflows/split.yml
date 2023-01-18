@@ -135,8 +135,14 @@ jobs:
         env:
           SPLIT: ${{ strategy.job-total }}
           SPLIT_INDEX: ${{ strategy.job-index }}
+        # pass the rest of the commands via Cypress GH Action
         with:
-          command: npx cypress run
+          config: ${{ inputs.config }}
+          config-file: ${{ inputs.config-file }}
+          # Cypress.env values
+          env: ${{ inputs.env }}
+          browser: ${{ inputs.browser }}
+          command: ${{ inputs.command }}
           start: ${{ inputs.start }}
           start-windows: ${{ inputs.start-windows }}
           install: ${{ inputs.install }}
