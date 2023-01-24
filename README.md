@@ -132,6 +132,15 @@ with:
   debug: cy-grep
 ```
 
+Should print something like:
+
+```
+cy-grep cy-grep plugin version 1.3.1 +0ms
+cy-grep Cypress config env object: { grepFilterSpecs: true, grepOmitFiltered: true, CACHE_FOLDER: '/home/runner/.cache/Cypress' } +1ms
+cy-grep specPattern cypress/e2e/**/*.cy.{js,jsx,ts,tsx} +2ms
+cy-grep excludeSpecPattern *.hot-update.js +0ms
+```
+
 ## Small print
 
 Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2021
