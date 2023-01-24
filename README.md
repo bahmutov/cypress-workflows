@@ -95,6 +95,43 @@ Advice: use an explicit [release tag](https://github.com/bahmutov/cypress-workfl
 - [bahmutov/my-svelte-app](https://github.com/bahmutov/my-svelte-app)
 - [bahmutov/sudoku-testing-v10](https://github.com/bahmutov/sudoku-testing-v10) runs E2E and component tests using Cypress v10
 
+## Debugging
+
+### debug-inputs
+
+You can print the workflow inputs using the parameter `debug-inputs`, for example
+
+```yml
+uses: bahmutov/cypress-workflows/.github/workflows/standard.yml@v1
+with:
+  debug-inputs: true
+```
+
+Should print something like
+
+```
+Debug inputs 🐞
+{
+  "record": false,
+  "config": false,
+  "config-file": "",
+  "envs": "grepTags=@nightly",
+  ...
+  "quiet": false,
+  "debug-inputs": true
+}
+```
+
+### debug variable
+
+You can set the environment variable `DEBUG` to enable verbose output from the [debug](https://github.com/debug-js/debug#readme) module, often used by Cypress and its plugins.
+
+```yml
+uses: bahmutov/cypress-workflows/.github/workflows/standard.yml@v1
+with:
+  debug: cy-grep
+```
+
 ## Small print
 
 Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2021
