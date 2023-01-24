@@ -96,6 +96,16 @@ on:
         type: boolean
         required: false
         default: false
+      debug-inputs:
+        description: 'Print the workflow inputs'
+        type: boolean
+        required: false
+        default: false
+      debug:
+        description: 'Set the environment variable DEBUG'
+        type: string
+        required: false
+        default: ''
 
 jobs:
   prepare:
@@ -124,6 +134,12 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
     steps:
+      - name: Debug inputs 🐞
+        if: ${{ inputs.debug-inputs }}
+        env:
+          WORKFLOW_INPUTS: ${{ toJson(inputs) }}
+        run: echo "$WORKFLOW_INPUTS"
+
       - name: Checkout 🛎
         uses: actions/checkout@v3
 
@@ -135,6 +151,8 @@ jobs:
         env:
           SPLIT: ${{ strategy.job-total }}
           SPLIT_INDEX: ${{ strategy.job-index }}
+          # pass the DEBUG environment variable
+          DEBUG: ${{ inputs.debug }}
         # pass the rest of the commands via Cypress GH Action
         with:
           config: ${{ inputs.config }}

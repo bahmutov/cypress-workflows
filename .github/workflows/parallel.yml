@@ -112,6 +112,16 @@ on:
         type: boolean
         required: false
         default: false
+      debug-inputs:
+        description: 'Print the workflow inputs'
+        type: boolean
+        required: false
+        default: false
+      debug:
+        description: 'Set the environment variable DEBUG'
+        type: string
+        required: false
+        default: ''
 
     # to tie all tests into a single recorded run, need the Dashboard key
     secrets:
@@ -147,6 +157,12 @@ jobs:
       fail-fast: false
       matrix: ${{fromJSON(needs.prepare.outputs.matrix)}}
     steps:
+      - name: Debug inputs 🐞
+        if: ${{ inputs.debug-inputs }}
+        env:
+          WORKFLOW_INPUTS: ${{ toJson(inputs) }}
+        run: echo "$WORKFLOW_INPUTS"
+
       - name: Checkout 🛎
         uses: actions/checkout@v3
 
@@ -184,3 +200,5 @@ jobs:
         env:
           # pass the Dashboard record key as an environment variable
           CYPRESS_RECORD_KEY: ${{ secrets.recordKey }}
+          # pass the DEBUG environment variable
+          DEBUG: ${{ inputs.debug }}

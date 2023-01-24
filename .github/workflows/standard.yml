@@ -20,7 +20,7 @@ on:
         description: 'Path to a JSON file where configuration values are set.'
         type: string
         required: false
-      envs:
+      env:
         description: 'Sets Cypress environment variables'
         type: string
         required: false
@@ -149,7 +149,7 @@ jobs:
           record: ${{ inputs.record }}
           config: ${{ inputs.config }}
           config-file: ${{ inputs.config-file }}
-          env: '${{ inputs.envs }}'
+          env: '${{ inputs.env }}'
           browser: ${{ inputs.browser }}
           command: ${{ inputs.command }}
           start: ${{ inputs.start }}
