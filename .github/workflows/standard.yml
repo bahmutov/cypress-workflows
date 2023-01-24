@@ -128,7 +128,7 @@ jobs:
 
       - name: Cypress tests 🧪
         # https://github.com/cypress-io/github-action
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v5
         with:
           record: ${{ inputs.record }}
           config: ${{ inputs.config }}
