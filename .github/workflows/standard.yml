@@ -113,6 +113,11 @@ on:
         type: boolean
         required: false
         default: false
+      debug-inputs:
+        description: 'Print the workflow inputs'
+        type: boolean
+        required: false
+        default: false
 
     secrets:
       recordKey:
@@ -123,6 +128,12 @@ jobs:
   standard:
     runs-on: ubuntu-20.04
     steps:
+      - name: Debug inputs 🐞
+        if: ${{ inputs.debug-inputs }}
+        env:
+          WORKFLOW_INPUTS: ${{ toJson(inputs) }}
+        run: echo "$WORKFLOW_INPUTS"
+
       - name: Checkout 🛎
         uses: actions/checkout@v3
 
@@ -133,7 +144,7 @@ jobs:
           record: ${{ inputs.record }}
           config: ${{ inputs.config }}
           config-file: ${{ inputs.config-file }}
-          envs: '${{ inputs.envs }}'
+          env: '${{ inputs.envs }}'
           browser: ${{ inputs.browser }}
           command: ${{ inputs.command }}
           start: ${{ inputs.start }}
