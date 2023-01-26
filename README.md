@@ -5,7 +5,7 @@ Call these workflows from your GitHub Action workflows, a single line (with para
 
 ## Example
 
-Check out the source code, install and cache dependencies, and run all Cypress specs using the following workflow
+Check out the source code, install and cache dependencies, and run all Cypress specs using the following workflow, store the `cypress/screenshots`, `cypress/videos`, and `cypress/results` artifacts.
 
 ```yml
 name: ci
@@ -17,6 +17,10 @@ jobs:
     # https://github.com/bahmutov/cypress-workflows
     uses: bahmutov/cypress-workflows/.github/workflows/standard.yml@v1
 ```
+
+### store-artifacts
+
+default `true`. Stores the test run artifacts.
 
 ## Record the run
 
