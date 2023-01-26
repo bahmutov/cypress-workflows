@@ -183,18 +183,22 @@ jobs:
           DEBUG: ${{ inputs.debug }}
 
       # capture screenshots, videos, Mochawesome reports
+      # https://github.com/actions/upload-artifact
       - uses: actions/upload-artifact@v3
         if: ${{ inputs.store-artifacts && always() }}
         with:
-          name: cypress-screenshots
+          name: standard-cypress-screenshots
           path: cypress/screenshots
+          if-no-files-found: ignore
       - uses: actions/upload-artifact@v3
         if: ${{ inputs.store-artifacts && always() }}
         with:
-          name: cypress-videos
+          name: standard-cypress-videos
           path: cypress/videos
+          if-no-files-found: ignore
       - uses: actions/upload-artifact@v3
         if: ${{ inputs.store-artifacts && always() }}
         with:
-          name: Mochawesome
+          name: standard-mochawesome
           path: cypress/results
+          if-no-files-found: ignore

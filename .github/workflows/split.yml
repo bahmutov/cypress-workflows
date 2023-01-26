@@ -185,15 +185,18 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: ${{ inputs.store-artifacts && always() }}
         with:
-          name: cypress-screenshots
+          name: split-${{ strategy.job-index }}-cypress-screenshots
           path: cypress/screenshots
+          if-no-files-found: ignore
       - uses: actions/upload-artifact@v3
         if: ${{ inputs.store-artifacts && always() }}
         with:
-          name: cypress-videos
+          name: split-${{ strategy.job-index }}-cypress-videos
           path: cypress/videos
+          if-no-files-found: ignore
       - uses: actions/upload-artifact@v3
         if: ${{ inputs.store-artifacts && always() }}
         with:
-          name: Mochawesome
+          name: split-${{ strategy.job-index }}-mochawesome
           path: cypress/results
+          if-no-files-found: ignore
