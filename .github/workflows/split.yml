@@ -106,6 +106,11 @@ on:
         type: string
         required: false
         default: ''
+      store-artifacts:
+        description: 'Store screenshots and videos from the cypress folder'
+        type: boolean
+        required: false
+        default: true
 
 jobs:
   prepare:
@@ -175,3 +180,20 @@ jobs:
           command-prefix: ${{ inputs.command-prefix }}
           cache-key: ${{ inputs.cache-key }}
           quiet: ${{ inputs.quiet }}
+
+      # capture screenshots, videos, Mochawesome reports
+      - uses: actions/upload-artifact@v3
+        if: ${{ inputs.store-artifacts && always() }}
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+      - uses: actions/upload-artifact@v3
+        if: ${{ inputs.store-artifacts && always() }}
+        with:
+          name: cypress-videos
+          path: cypress/videos
+      - uses: actions/upload-artifact@v3
+        if: ${{ inputs.store-artifacts && always() }}
+        with:
+          name: Mochawesome
+          path: cypress/results

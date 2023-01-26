@@ -58,7 +58,7 @@ jobs:
 
 ## Parallel example
 
-Let's split all tests across 3 machines using [Cypress Parallelization](https://on.cypress.io/parallelization)
+Let's split all tests across 3 machines using [Cypress Parallelization](https://on.cypress.io/parallelization) paid feature.
 
 ```yml
 name: ci
