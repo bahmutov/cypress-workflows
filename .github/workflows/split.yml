@@ -182,21 +182,15 @@ jobs:
           quiet: ${{ inputs.quiet }}
 
       # capture screenshots, videos, Mochawesome reports
+      # in a single test artifact so that relative paths work
+      # capture screenshots, videos, Mochawesome reports
+      # https://github.com/actions/upload-artifact
       - uses: actions/upload-artifact@v3
         if: ${{ inputs.store-artifacts && always() }}
         with:
-          name: split-${{ strategy.job-index }}-cypress-screenshots
-          path: cypress/screenshots
-          if-no-files-found: ignore
-      - uses: actions/upload-artifact@v3
-        if: ${{ inputs.store-artifacts && always() }}
-        with:
-          name: split-${{ strategy.job-index }}-cypress-videos
-          path: cypress/videos
-          if-no-files-found: ignore
-      - uses: actions/upload-artifact@v3
-        if: ${{ inputs.store-artifacts && always() }}
-        with:
-          name: split-${{ strategy.job-index }}-mochawesome
-          path: cypress/results
+          name: cypress-results-${{ strategy.job-index }}
+          path: |
+            cypress/screenshots
+            cypress/videos
+            cypress/results
           if-no-files-found: ignore
