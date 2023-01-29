@@ -246,11 +246,11 @@ jobs:
 
       - name: Merge Mochawesome JSON reports
         # assuming the merge tool is installed
-        run: npx mochawesome-merge mochawesome/results/*.json -o mochawesome/report.json
+        run: npx mochawesome-merge mochawesome/results/*.json -o mochawesome/results/merged.json
       - name: Generate Mochawesome HTML report
         # assuming the merge tool is installed
         run: |
-          npx marge mochawesome/report.json \
+          npx marge mochawesome/merged.json \
             --charts true --showHooks always \
             --reportDir mochawesome \
             --reportFilename index.html
