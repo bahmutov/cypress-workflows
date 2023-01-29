@@ -195,7 +195,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: ${{ inputs.store-artifacts && always() }}
         with:
-          name: cypress-results-${{ strategy.job-index }}
+          name: cypress-split-results-${{ strategy.job-index }}
           path: |
             cypress/screenshots
             cypress/videos
@@ -215,8 +215,8 @@ jobs:
           runTests: false
       # https://github.com/actions/download-artifact
       - uses: actions/download-artifact@v3
+        # download all test results artifacts from the previous jobs
         with:
-          name: cypress-results-
           path: split-results
       - name: Display structure of downloaded files
         run: ls -R split-results
