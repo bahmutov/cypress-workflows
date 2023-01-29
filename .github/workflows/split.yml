@@ -223,19 +223,40 @@ jobs:
           path: split-results
       - name: Display structure of downloaded files
         run: ls -R split-results
+
+      # copy all reports and videos and screenshots into a single place
+      # mochawesome/
+      #   screenshots/
+      #   videos/
+      #   results/
+      #      all individual JSON reports
+      - name: Prepare folder
+        run: |
+          mkdir mochawesome
+          mkdir -p mochawesome/screenshots
+          mkdir -p mochawesome/videos
+          mkdir -p mochawesome/results
+      - name: Copy all assets and JSON reports
+        run: |
+          cp -r split-results/cypress-split-results-*/screenshots/* mochawesome/screenshots || true
+          cp -r split-results/cypress-split-results-*/videos/* mochawesome/videos || true
+          cp -r split-results/cypress-split-results-*/results/* mochawesome/results || true
+      - name: Show coped files
+        run: ls -lR mochawesome
+
       - name: Merge Mochawesome JSON reports
         # assuming the merge tool is installed
-        run: npx mochawesome-merge split-results/cypress-split-results-*/results/*.json -o split-results/report.json
+        run: npx mochawesome-merge mochawesome/results/*.json -o mochawesome/report.json
       - name: Generate Mochawesome HTML report
         # assuming the merge tool is installed
         run: |
-          npx marge split-results/report.json \
+          npx marge mochawesome/report.json \
             --charts true --showHooks always \
-            --reportDir split-results \
+            --reportDir mochawesome \
             --reportFilename index.html
 
       - uses: actions/upload-artifact@v3
         with:
           name: merged-mochawesome-report
-          path: split-results
+          path: mochawesome
 
