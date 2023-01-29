@@ -203,7 +203,7 @@ jobs:
           if-no-files-found: ignore
 
   merge-reports:
-    if: ${{ inputs.store-artifacts && inputs.marge }}
+    if: ${{ inputs.store-artifacts && inputs.marge && always() }}
     needs: tests
     runs-on: ubuntu-20.04
     steps:
