@@ -111,6 +111,13 @@ on:
         type: boolean
         required: false
         default: true
+      marge:
+        description: |
+          Download the Mochawesome results from all tests jobs
+          and merge into a single report
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   prepare:
@@ -194,3 +201,23 @@ jobs:
             cypress/videos
             cypress/results
           if-no-files-found: ignore
+
+  merge-reports:
+    if: ${{ inputs.store-artifacts && inputs.marge }}
+    needs: tests
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+      - name: Install dependencies 🧪
+        uses: cypress-io/github-action@v5
+        with:
+          runTests: false
+      # https://github.com/actions/download-artifact
+      - uses: actions/download-artifact@v3
+        with:
+          name: cypress-results-
+          path: split-results
+      - name: Display structure of downloaded files
+        run: ls -R split-results
+
