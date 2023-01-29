@@ -250,9 +250,9 @@ jobs:
       - name: Generate Mochawesome HTML report
         # assuming the merge tool is installed
         run: |
-          npx marge mochawesome/merged.json \
+          npx marge mochawesome/results/merged.json \
             --charts true --showHooks always \
-            --reportDir mochawesome \
+            --reportDir mochawesome/results \
             --reportFilename index.html
 
       - uses: actions/upload-artifact@v3
