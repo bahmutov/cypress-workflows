@@ -231,7 +231,7 @@ jobs:
         run: |
           npx marge split-results/report.json \
             --charts true --showHooks always \
-            reportDir split-results
+            --reportDir split-results \
             --reportFilename index.html
 
       - uses: actions/upload-artifact@v3
