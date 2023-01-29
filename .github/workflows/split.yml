@@ -225,5 +225,10 @@ jobs:
         run: npx mochawesome-merge split-results/cypress-split-results-*/results/*.json -o split-results/report.json
       - name: Generate Mochawesome HTML report
         # assuming the merge tool is installed
-        run: npx marge split-results/report.json --charts true
+        run: npx marge split-results/report.json --charts true --showHooks true --reportFilename split-results/index.html
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: merged-mochawesome-report
+          path: split-results
 
