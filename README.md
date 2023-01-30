@@ -56,6 +56,41 @@ jobs:
       n: 3
 ```
 
+### marge
+
+Combines all separate Mochawesome JSON reports into a single HTML report including screenshots and videos.
+
+```yml
+# https://github.com/bahmutov/cypress-workflows
+uses: bahmutov/cypress-workflows/.github/workflows/split.yml@v1
+with:
+  n: 3
+  marge: true
+```
+
+Assumes the project has installed `mochawesome`, `mochawesome-merge`, and `mochawesome-report-generator` dependencies.
+
+```js cypress.config.js
+import { defineConfig } from 'cypress'
+export default defineConfig({
+  // https://github.com/adamgruber/mochawesome
+  reporter: 'mochawesome',
+  reporterOptions: {
+    useInlineDiffs: true,
+    embeddedScreenshots: true,
+    reportDir: 'cypress/results',
+    reportFilename: '[name].html',
+    overwrite: true,
+    html: true,
+    json: true,
+  }
+})
+```
+
+See the example in [bahmutov/cy-report-example](https://github.com/bahmutov/cy-report-example).
+
+![Merge reports job](./images/ci1.png)
+
 ## Parallel example
 
 Let's split all tests across 3 machines using [Cypress Parallelization](https://on.cypress.io/parallelization) paid feature.
