@@ -87,7 +87,7 @@ export default defineConfig({
 })
 ```
 
-See the example in [bahmutov/cy-report-example](https://github.com/bahmutov/cy-report-example).
+See the example in [bahmutov/cy-report-example](https://github.com/bahmutov/cy-report-example) and read the blog post [The Battle of Cypress Mochawesome Reporters](https://glebbahmutov.com/blog/the-awesome-battle/).
 
 ![Merge reports job](./images/ci1.png)
 
