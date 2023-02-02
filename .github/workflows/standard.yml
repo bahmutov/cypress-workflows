@@ -128,6 +128,11 @@ on:
         type: boolean
         required: false
         default: true
+      component:
+        description: 'Run the component tests, skipping end-to-end tests'
+        type: boolean
+        required: false
+        default: false
 
     secrets:
       recordKey:
@@ -176,6 +181,7 @@ jobs:
           ci-build-id: ${{ inputs.ci-build-id }}
           cache-key: ${{ inputs.cache-key }}
           quiet: ${{ inputs.quiet }}
+          component: ${{ inputs.component }}
         env:
           # pass the Dashboard record key as an environment variable
           CYPRESS_RECORD_KEY: ${{ secrets.recordKey }}
