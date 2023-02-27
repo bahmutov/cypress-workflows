@@ -111,6 +111,11 @@ on:
         type: boolean
         required: false
         default: true
+      component:
+        description: 'Run the component tests, skipping end-to-end tests'
+        type: boolean
+        required: false
+        default: false
       marge:
         description: |
           Download the Mochawesome results from all tests jobs
@@ -187,6 +192,7 @@ jobs:
           command-prefix: ${{ inputs.command-prefix }}
           cache-key: ${{ inputs.cache-key }}
           quiet: ${{ inputs.quiet }}
+          component: ${{ inputs.component }}
 
       # capture screenshots, videos, Mochawesome reports
       # in a single test artifact so that relative paths work
