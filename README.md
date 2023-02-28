@@ -56,6 +56,28 @@ jobs:
       n: 3
 ```
 
+Sometimes you might want to run a single command before all split jobs start. You can use `before-run` parameter. See [rn-examples](https://github.com/bahmutov/rn-examples)
+
+```yml
+name: ci
+on: push
+jobs:
+  component-tests:
+    # https://github.com/bahmutov/cypress-workflows
+    uses: bahmutov/cypress-workflows/.github/workflows/split.yml@v1
+    with:
+      # print the test names
+      before-run: 'npm run test-names --silent'
+      component: true
+      n: 2
+```
+
+![Workflow diagram](./images/d1.png)
+
+If you click on the "prepare" job, the `before-run` step prints the test names
+
+![The before-run step](./images/d2.png)
+
 ### marge
 
 Combines all separate Mochawesome JSON reports into a single HTML report including screenshots and videos.
