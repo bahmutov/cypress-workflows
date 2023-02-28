@@ -10,6 +10,11 @@ on:
         type: number
         required: true
         default: 1
+      # a common command to run before parallel jobs
+      before-run:
+        description: 'A command to run once before all parallel jobs'
+        type: string
+        required: false
       # standard parameters
       config:
         description: 'Set configuration values. Separate multiple values with a comma. The values set here override any values set in your configuration file.'
@@ -142,6 +147,18 @@ jobs:
 
       - name: Print result 🖨
         run: echo '${{ steps.prepare.outputs.matrix }}'
+
+      # by installing dependencies once
+      # we cache them
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+      - name: Install deps 📦
+        uses: cypress-io/github-action@v5
+        with:
+          runTests: false
+      - name: Before run 🧺
+        if: ${{ inputs.before-run }}
+        run: ${{ inputs.before-run }}
 
   # the N parallel testing jobs we create
   tests:
