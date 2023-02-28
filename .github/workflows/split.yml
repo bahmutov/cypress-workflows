@@ -177,6 +177,7 @@ jobs:
           # Cypress.env values
           env: '${{ inputs.env }}'
           browser: ${{ inputs.browser }}
+          build: ${{ inputs.build }}
           command: ${{ inputs.command }}
           start: ${{ inputs.start }}
           start-windows: ${{ inputs.start-windows }}
