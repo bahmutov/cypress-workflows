@@ -156,6 +156,11 @@ Advice: use an explicit [release tag](https://github.com/bahmutov/cypress-workfl
 - [bahmutov/my-svelte-app](https://github.com/bahmutov/my-svelte-app)
 - [bahmutov/sudoku-testing-v10](https://github.com/bahmutov/sudoku-testing-v10) runs E2E and component tests using Cypress v10
 
+## Blog posts
+
+- [Run Cypress Specs In Parallel For Free](https://glebbahmutov.com/blog/cypress-parallel-free/)
+- [Trigger Selected Cypress Specs Using GitHub Actions](https://glebbahmutov.com/blog/trigger-cypress-specs/)
+
 ## Debugging
 
 ### debug-inputs
@@ -212,6 +217,7 @@ Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2021
 - [videos](https://www.youtube.com/glebbahmutov)
 - [presentations](https://slides.com/bahmutov)
 - [cypress.tips](https://cypress.tips)
+- 🎓 [My Cypress courses](https://cypress.tips/courses)
 
 License: MIT - do anything with the code, but don't blame me if it does not work.
 
