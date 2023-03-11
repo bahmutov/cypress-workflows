@@ -7,6 +7,8 @@ Call these workflows from your GitHub Action workflows, a single line (with para
 
 Check out the source code, install and cache dependencies, and run all Cypress specs using the following workflow, store the `cypress/screenshots`, `cypress/videos`, and `cypress/results` artifacts.
 
+In your `.github/workflows/ci.yml` use the following:
+
 ```yml
 name: ci
 on: [push]
@@ -21,6 +23,24 @@ jobs:
 ### store-artifacts
 
 default `true`. Stores the test run artifacts.
+
+### start
+
+A common scenario is to start the application and wait for it to respond. You can pass parameters to the workflow with the start command and the address to wait for.
+
+```yml
+name: ci
+on: [push]
+jobs:
+  test:
+    # use the reusable workflow to check out the code, install dependencies
+    # and run the Cypress tests
+    # https://github.com/bahmutov/cypress-workflows
+    uses: bahmutov/cypress-workflows/.github/workflows/standard.yml@v1
+    with:
+      start: npm start
+      wait-on: 'http://127.0.0.1:3000'
+```
 
 ## Record the run
 
