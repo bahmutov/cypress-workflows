@@ -3,6 +3,8 @@
 
 Call these workflows from your GitHub Action workflows, a single line (with parameters) let's you run N parallel test jobs without any configuration.
 
+🎓 Covered in my course [Testing The Swag Store](https://cypress.tips/courses/swag-store)
+
 ## Example
 
 Check out the source code, install and cache dependencies, and run all Cypress specs using the following workflow, store the `cypress/screenshots`, `cypress/videos`, and `cypress/results` artifacts.
