@@ -101,6 +101,7 @@ on:
         type: boolean
         required: false
         default: false
+      # custom input parameters
       debug-inputs:
         description: 'Print the workflow inputs'
         type: boolean
@@ -123,8 +124,15 @@ on:
         default: false
       marge:
         description: |
-          Download the Mochawesome results from all tests jobs
+          Download the Mochawesome results from all test jobs
           and merge into a single report
+        type: boolean
+        required: false
+        default: false
+      coverage:
+        description: |
+          Download all coverage results from all test jobs
+          and merge into a single coverage report
         type: boolean
         required: false
         default: false
@@ -214,7 +222,7 @@ jobs:
 
       # capture screenshots, videos, Mochawesome reports
       # in a single test artifact so that relative paths work
-      # capture screenshots, videos, Mochawesome reports
+      # capture screenshots, videos, Mochawesome reports, coverage folder
       # https://github.com/actions/upload-artifact
       - uses: actions/upload-artifact@v3
         if: ${{ inputs.store-artifacts && always() }}
@@ -224,6 +232,7 @@ jobs:
             cypress/screenshots
             cypress/videos
             cypress/results
+            coverage
           if-no-files-found: ignore
 
   merge-reports:
@@ -265,7 +274,7 @@ jobs:
           cp -r split-results/cypress-split-results-*/screenshots/* mochawesome/screenshots || true
           cp -r split-results/cypress-split-results-*/videos/* mochawesome/videos || true
           cp -r split-results/cypress-split-results-*/results/* mochawesome/results || true
-      - name: Show coped files
+      - name: Show copied files
         run: ls -lR mochawesome
 
       - name: Merge Mochawesome JSON reports
@@ -284,3 +293,34 @@ jobs:
           name: merged-mochawesome-report
           path: mochawesome
 
+  merge-coverage:
+    if: ${{ inputs.store-artifacts && inputs.coverage && always() }}
+    needs: tests
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+      - name: Install dependencies 🧪
+        uses: cypress-io/github-action@v5
+        with:
+          runTests: false
+      # https://github.com/actions/download-artifact
+      - uses: actions/download-artifact@v3
+        # download all test results artifacts from the previous jobs
+        # it would be nice to download only the split jobs test artifacts
+        # but cannot specify the pattern of the test artifacts yet
+        # https://github.com/actions/download-artifact/issues/103
+        with:
+          path: split-results
+      - name: Display structure of downloaded files
+        run: ls -R split-results
+
+      - name: Merge coverage reports
+        # assuming the merge tool is installed
+        # https://github.com/bahmutov/cypress-code-coverage
+        run: npx cc-merge split-results
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: merged-coverage
+          path: coverage
