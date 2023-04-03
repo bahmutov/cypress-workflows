@@ -285,8 +285,6 @@ jobs:
           install: ${{ inputs.install }}
           install-command: ${{ inputs.install-command }}
           runTests: ${{ inputs.runTests }}
-          wait-on: ${{ inputs.wait-on }}
-          wait-on-timeout: ${{ inputs.wait-on-timeout }}
           working-directory: ${{ inputs.working-directory }}
           headed: ${{ inputs.headed }}
           spec: ${{ inputs.spec }}
