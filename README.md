@@ -135,6 +135,20 @@ See the example in [bahmutov/cy-report-example](https://github.com/bahmutov/cy-r
 
 ![Merge reports job](./images/ci1.png)
 
+### Combine code coverage
+
+If you use [@bahmutov/cypress-code-coverage](https://github.com/bahmutov/cypress-code-coverage) you can combine the coverage from each split run into a single report
+
+```yml
+# https://github.com/bahmutov/cypress-workflows
+uses: bahmutov/cypress-workflows/.github/workflows/split.yml@v1
+with:
+  n: 3
+  coverage: true
+```
+
+![Combine code coverage workflow](./images/combine.png)
+
 ## Parallel example
 
 Let's split all tests across 3 machines using [Cypress Parallelization](https://on.cypress.io/parallelization) paid feature.
