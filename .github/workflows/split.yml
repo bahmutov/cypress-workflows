@@ -180,7 +180,7 @@ jobs:
 
   # the N parallel E2E testing jobs we create
   e2eTests:
-    if: ${{ inputs.nE2E }}
+    if: ${{ inputs.nE2E > 0 }}
     needs: prepare
     runs-on: ubuntu-20.04
     strategy:
@@ -247,7 +247,7 @@ jobs:
 
   # the N parallel Component testing jobs we create
   componentTests:
-    if: ${{ inputs.nComponent }}
+    if: ${{ inputs.nComponent > 0 }}
     needs: prepare
     runs-on: ubuntu-20.04
     strategy:
@@ -282,8 +282,6 @@ jobs:
           browser: ${{ inputs.browser }}
           build: ${{ inputs.build }}
           command: ${{ inputs.command }}
-          start: ${{ inputs.start }}
-          start-windows: ${{ inputs.start-windows }}
           install: ${{ inputs.install }}
           install-command: ${{ inputs.install-command }}
           runTests: ${{ inputs.runTests }}
