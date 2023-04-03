@@ -5,11 +5,16 @@ name: split
 on:
   workflow_call:
     inputs:
-      n:
-        description: 'Number of parallel containers'
+      nE2E:
+        description: 'Number of parallel containers for running E2E specs'
         type: number
         required: true
         default: 1
+      nComponent:
+        description: 'Number of parallel containers for running Component specs'
+        type: number
+        required: false
+        default: 0
       # a common command to run before parallel jobs
       before-run:
         description: 'A command to run once before all parallel jobs'
@@ -117,11 +122,6 @@ on:
         type: boolean
         required: false
         default: true
-      component:
-        description: 'Run the component tests, skipping end-to-end tests'
-        type: boolean
-        required: false
-        default: false
       marge:
         description: |
           Download the Mochawesome results from all test jobs
@@ -143,18 +143,28 @@ jobs:
     # explicitly set the output of this job
     # so that other jobs can use it
     outputs:
-      matrix: ${{ steps.prepare.outputs.matrix }}
+      matrixE2E: ${{ steps.prepareE2E.outputs.matrix }}
+      matrixComponent: ${{ steps.prepareComponent.outputs.matrix }}
     steps:
       # generate the list using a bash script
-      - name: Create container matrix ⊹
-        id: prepare
+      - name: Create E2E container matrix ⊹
+        id: prepareE2E
         # for reusable workflow, must use the full action reference
         uses: bahmutov/gh-build-matrix@main
         with:
-          n: ${{ inputs.n }} # number of containers to output
+          # number of containers to use for running E2E tests
+          n: ${{ inputs.nE2E }}
+
+      - name: Create component container matrix ⊹
+        id: prepareComponent
+        # for reusable workflow, must use the full action reference
+        uses: bahmutov/gh-build-matrix@main
+        with:
+          # number of containers to use for running component tests
+          n: ${{ inputs.nComponent }}
 
       - name: Print result 🖨
-        run: echo '${{ steps.prepare.outputs.matrix }}'
+        run: echo '${{ steps.prepareE2E.outputs.matrix }}'
 
       # by installing dependencies once
       # we cache them
@@ -168,13 +178,14 @@ jobs:
         if: ${{ inputs.before-run }}
         run: ${{ inputs.before-run }}
 
-  # the N parallel testing jobs we create
-  tests:
+  # the N parallel E2E testing jobs we create
+  e2eTests:
+    if: ${{ inputs.nE2E > 0 }}
     needs: prepare
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
-      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrixE2E) }}
     steps:
       - name: Debug inputs 🐞
         if: ${{ inputs.debug-inputs }}
@@ -218,7 +229,6 @@ jobs:
           command-prefix: ${{ inputs.command-prefix }}
           cache-key: ${{ inputs.cache-key }}
           quiet: ${{ inputs.quiet }}
-          component: ${{ inputs.component }}
 
       # capture screenshots, videos, Mochawesome reports
       # in a single test artifact so that relative paths work
@@ -227,7 +237,73 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: ${{ inputs.store-artifacts && always() }}
         with:
-          name: cypress-split-results-${{ strategy.job-index }}
+          name: cypress-split-results-e2e-${{ strategy.job-index }}
+          path: |
+            cypress/screenshots
+            cypress/videos
+            cypress/results
+            coverage
+          if-no-files-found: ignore
+
+  # the N parallel Component testing jobs we create
+  componentTests:
+    if: ${{ inputs.nComponent > 0 }}
+    needs: prepare
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrixComponent) }}
+    steps:
+      - name: Debug inputs 🐞
+        if: ${{ inputs.debug-inputs }}
+        env:
+          WORKFLOW_INPUTS: ${{ toJson(inputs) }}
+        run: echo "$WORKFLOW_INPUTS"
+
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      # these containers will load balance all found tests among themselves
+      - name: Cypress tests 🧪
+        uses: cypress-io/github-action@v5
+        # pass the machine index and the total number
+        # https://github.com/bahmutov/cypress-split
+        env:
+          SPLIT: ${{ strategy.job-total }}
+          SPLIT_INDEX: ${{ strategy.job-index }}
+          # pass the DEBUG environment variable
+          DEBUG: ${{ inputs.debug }}
+        # pass the rest of the commands via Cypress GH Action
+        with:
+          config: ${{ inputs.config }}
+          config-file: ${{ inputs.config-file }}
+          # Cypress.env values
+          env: '${{ inputs.env }}'
+          browser: ${{ inputs.browser }}
+          build: ${{ inputs.build }}
+          command: ${{ inputs.command }}
+          install: ${{ inputs.install }}
+          install-command: ${{ inputs.install-command }}
+          runTests: ${{ inputs.runTests }}
+          wait-on: ${{ inputs.wait-on }}
+          wait-on-timeout: ${{ inputs.wait-on-timeout }}
+          working-directory: ${{ inputs.working-directory }}
+          headed: ${{ inputs.headed }}
+          spec: ${{ inputs.spec }}
+          project: ${{ inputs.project }}
+          command-prefix: ${{ inputs.command-prefix }}
+          cache-key: ${{ inputs.cache-key }}
+          quiet: ${{ inputs.quiet }}
+          component: true
+
+      # capture screenshots, videos, Mochawesome reports
+      # in a single test artifact so that relative paths work
+      # capture screenshots, videos, Mochawesome reports, coverage folder
+      # https://github.com/actions/upload-artifact
+      - uses: actions/upload-artifact@v3
+        if: ${{ inputs.store-artifacts && always() }}
+        with:
+          name: cypress-split-results-component-${{ strategy.job-index }}
           path: |
             cypress/screenshots
             cypress/videos
@@ -237,7 +313,7 @@ jobs:
 
   merge-reports:
     if: ${{ inputs.store-artifacts && inputs.marge && always() }}
-    needs: tests
+    needs: [e2eTests, componentTests]
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
@@ -295,7 +371,7 @@ jobs:
 
   merge-coverage:
     if: ${{ inputs.store-artifacts && inputs.coverage && always() }}
-    needs: tests
+    needs: [e2eTests, componentTests]
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
