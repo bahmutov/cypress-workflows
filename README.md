@@ -73,9 +73,9 @@ on: [push]
 jobs:
   test:
     # https://github.com/bahmutov/cypress-workflows
-    uses: bahmutov/cypress-workflows/.github/workflows/split.yml@v1
+    uses: bahmutov/cypress-workflows/.github/workflows/split.yml@v2
     with:
-      n: 3
+      nE2E: 3
 ```
 
 Sometimes you might want to run a single command before all split jobs start. You can use `before-run` parameter. See [rn-examples](https://github.com/bahmutov/rn-examples)
@@ -86,12 +86,11 @@ on: push
 jobs:
   component-tests:
     # https://github.com/bahmutov/cypress-workflows
-    uses: bahmutov/cypress-workflows/.github/workflows/split.yml@v1
+    uses: bahmutov/cypress-workflows/.github/workflows/split.yml@v2
     with:
       # print the test names
       before-run: 'npm run test-names --silent'
-      component: true
-      n: 2
+      nComponent: 2
 ```
 
 ![Workflow diagram](./images/d1.png)
@@ -106,9 +105,9 @@ Combines all separate Mochawesome JSON reports into a single HTML report includi
 
 ```yml
 # https://github.com/bahmutov/cypress-workflows
-uses: bahmutov/cypress-workflows/.github/workflows/split.yml@v1
+uses: bahmutov/cypress-workflows/.github/workflows/split.yml@v2
 with:
-  n: 3
+  nE2E: 3
   marge: true
 ```
 
@@ -141,9 +140,9 @@ If you use [@bahmutov/cypress-code-coverage](https://github.com/bahmutov/cypress
 
 ```yml
 # https://github.com/bahmutov/cypress-workflows
-uses: bahmutov/cypress-workflows/.github/workflows/split.yml@v1
+uses: bahmutov/cypress-workflows/.github/workflows/split.yml@v2
 with:
-  n: 3
+  nE2E: 3
   coverage: true
 ```
 
@@ -181,6 +180,33 @@ The workflows allow passing pretty much all [Cypress GH Action](https://github.c
 ## Versions
 
 Advice: use an explicit [release tag](https://github.com/bahmutov/cypress-workflows/releases) when using a workflow like `parallel.yml@v1.0.1`. You might also use the latest release from the major branch `v1` like `parallel.yml@v1`. Not recommended: using the latest commit on the branch `parallel.yml@main` or using a specific commit `parallel.yml@2a9d460`.
+
+### Migrations
+
+#### split v1 to v2
+
+Instead of separate E2E and component test jobs, use a single job and split it as you would like
+
+```yml
+# v1
+jobs:
+  e2e:
+    uses: bahmutov/cypress-workflows/.github/workflows/split.yml@v1
+    with:
+      n: 3
+  component:
+    uses: bahmutov/cypress-workflows/.github/workflows/split.yml@v1
+    with:
+      component: true
+      n: 2
+# v2
+jobs:
+  tests:
+    uses: bahmutov/cypress-workflows/.github/workflows/split.yml@v2
+    with:
+      nE2E: 3 # run 3 parallel jobs for E2E tests
+      nComponent: 2 # run 2 parallel jobs for component tests
+```
 
 ## Examples
 
