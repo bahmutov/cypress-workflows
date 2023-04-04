@@ -8,8 +8,8 @@ on:
       nE2E:
         description: 'Number of parallel containers for running E2E specs'
         type: number
-        required: true
-        default: 1
+        required: false
+        default: 0
       nComponent:
         description: 'Number of parallel containers for running Component specs'
         type: number
