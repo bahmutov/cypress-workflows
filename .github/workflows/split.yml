@@ -136,6 +136,8 @@ on:
         type: boolean
         required: false
         default: false
+      # we are setting it true by default for the split workflow
+      # since this workflow has its own GHA summary via cypress-split plugin
       publish-summary:
         description: 'Whether or not to publish job summary'
         type: boolean
