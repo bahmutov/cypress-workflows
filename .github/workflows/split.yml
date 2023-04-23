@@ -142,7 +142,7 @@ on:
         description: 'Whether or not to publish job summary'
         type: boolean
         required: false
-        default: true
+        default: false
 jobs:
   prepare:
     runs-on: ubuntu-20.04
