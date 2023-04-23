@@ -136,7 +136,11 @@ on:
         type: boolean
         required: false
         default: false
-
+      publish-summary:
+        description: 'Whether or not to publish job summary'
+        type: boolean
+        required: false
+        default: true
 jobs:
   prepare:
     runs-on: ubuntu-20.04
@@ -229,6 +233,7 @@ jobs:
           command-prefix: ${{ inputs.command-prefix }}
           cache-key: ${{ inputs.cache-key }}
           quiet: ${{ inputs.quiet }}
+          publish-summary: ${{ inputs.publish-summary }}
 
       # capture screenshots, videos, Mochawesome reports
       # in a single test artifact so that relative paths work

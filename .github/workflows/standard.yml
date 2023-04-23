@@ -133,6 +133,11 @@ on:
         type: boolean
         required: false
         default: false
+      publish-summary:
+        description: 'Whether or not to publish job summary'
+        type: boolean
+        required: false
+        default: true
 
     secrets:
       recordKey:
@@ -182,6 +187,7 @@ jobs:
           cache-key: ${{ inputs.cache-key }}
           quiet: ${{ inputs.quiet }}
           component: ${{ inputs.component }}
+          publish-summary: ${{ inputs.publish-summary }}
         env:
           # pass the Dashboard record key as an environment variable
           CYPRESS_RECORD_KEY: ${{ secrets.recordKey }}
