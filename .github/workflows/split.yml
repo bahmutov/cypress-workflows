@@ -445,11 +445,12 @@ jobs:
       # to merge timings you need v1.13+ of cypress-split
       - name: Merge split timings
         id: merge
-        run: npx cypress-split-merge \
-          --parent-folder split-results \
-          --split-file ${{ inputs.split-file }} \
-          --output ${{ inputs.split-file }} \
-          --set-gha-output merged-timings
+        run: |
+          npx cypress-split-merge \
+            --parent-folder split-results \
+            --split-file ${{ inputs.split-file }} \
+            --output ${{ inputs.split-file }} \
+            --set-gha-output merged-timings
 
       - uses: actions/upload-artifact@v3
         with:
