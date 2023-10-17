@@ -148,6 +148,10 @@ on:
         description: 'E2E split timings file to use and merge back'
         type: string
         required: false
+    outputs:
+      merged-timings:
+        description: "Combined timings JSON from split files"
+        value: ${{ jobs.merge-split-timings.outputs.timings }}
 jobs:
   prepare:
     runs-on: ubuntu-20.04
@@ -416,6 +420,8 @@ jobs:
     # only merge timings if E2E specs were successful
     if: ${{ inputs.split-file }}
     needs: [e2eTests]
+    outputs:
+      timings: ${{ steps.merge.outputs.merged-timings }}
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
@@ -435,12 +441,14 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -R split-results
 
-      # to merge timings you need v1.12+ of cypress-split
+      # to merge timings you need v1.13+ of cypress-split
       - name: Merge split timings
+        id: merge
         run: npx cypress-split-merge \
           --parent-folder split-results \
           --split-file ${{ inputs.split-file }} \
-          --output ${{ inputs.split-file }}
+          --output ${{ inputs.split-file }} \
+          --set-gha-output merged-timings
 
       - uses: actions/upload-artifact@v3
         with:
