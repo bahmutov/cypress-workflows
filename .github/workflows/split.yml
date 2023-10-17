@@ -451,6 +451,9 @@ jobs:
             --split-file ${{ inputs.split-file }} \
             --output ${{ inputs.split-file }} \
             --set-gha-output merged-timings
+        env:
+          # pass the DEBUG environment variable
+          DEBUG: ${{ inputs.debug }}
 
       - name: Print timings 🖨️
         run: |
