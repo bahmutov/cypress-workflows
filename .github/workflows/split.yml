@@ -143,6 +143,15 @@ on:
         type: boolean
         required: false
         default: false
+      # use the following split configuration/timings file
+      split-file:
+        description: 'E2E split timings file to use and merge back'
+        type: string
+        required: false
+    outputs:
+      merged-timings:
+        description: "Combined timings JSON from split files"
+        value: ${{ jobs.merge-split-timings.outputs.timings }}
 jobs:
   prepare:
     runs-on: ubuntu-20.04
@@ -175,7 +184,7 @@ jobs:
       # by installing dependencies once
       # we cache them
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install deps 📦
         uses: cypress-io/github-action@v5
         with:
@@ -200,7 +209,7 @@ jobs:
         run: echo "$WORKFLOW_INPUTS"
 
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # these containers will load balance all found tests among themselves
       - name: Cypress tests 🧪
@@ -210,6 +219,7 @@ jobs:
         env:
           SPLIT: ${{ strategy.job-total }}
           SPLIT_INDEX: ${{ strategy.job-index }}
+          SPLIT_FILE: '${{ inputs.split-file }}'
           # pass the DEBUG environment variable
           DEBUG: ${{ inputs.debug }}
         # pass the rest of the commands via Cypress GH Action
@@ -268,7 +278,7 @@ jobs:
         run: echo "$WORKFLOW_INPUTS"
 
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # these containers will load balance all found tests among themselves
       - name: Cypress tests 🧪
@@ -322,7 +332,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install dependencies 🧪
         uses: cypress-io/github-action@v5
         with:
@@ -380,7 +390,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install dependencies 🧪
         uses: cypress-io/github-action@v5
         with:
@@ -405,3 +415,42 @@ jobs:
         with:
           name: merged-coverage
           path: coverage
+
+  merge-split-timings:
+    # only merge timings if E2E specs were successful
+    if: ${{ inputs.split-file }}
+    needs: [e2eTests]
+    outputs:
+      timings: ${{ steps.merge.outputs.merged-timings }}
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v4
+      - name: Install dependencies 🧪
+        uses: cypress-io/github-action@v5
+        with:
+          runTests: false
+      # https://github.com/actions/download-artifact
+      - uses: actions/download-artifact@v3
+        # download all test results artifacts from the previous jobs
+        # it would be nice to download only the split jobs test artifacts
+        # but cannot specify the pattern of the test artifacts yet
+        # https://github.com/actions/download-artifact/issues/103
+        with:
+          path: split-results
+      - name: Display structure of downloaded files
+        run: ls -R split-results
+
+      # to merge timings you need v1.13+ of cypress-split
+      - name: Merge split timings
+        id: merge
+        run: npx cypress-split-merge \
+          --parent-folder split-results \
+          --split-file ${{ inputs.split-file }} \
+          --output ${{ inputs.split-file }} \
+          --set-gha-output merged-timings
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: merged-split-file
+          path: '${{ inputs.split-file }}'
