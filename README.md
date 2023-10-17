@@ -227,6 +227,7 @@ jobs:
 
 - [Run Cypress Specs In Parallel For Free](https://glebbahmutov.com/blog/cypress-parallel-free/)
 - [Trigger Selected Cypress Specs Using GitHub Actions](https://glebbahmutov.com/blog/trigger-cypress-specs/)
+- [Run Cypress Specs In Parallel For Free Using Spec Timings](https://glebbahmutov.com/blog/cypress-parallel-free-based-on-timings/)
 
 ## Debugging
 
