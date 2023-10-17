@@ -260,6 +260,7 @@ jobs:
             cypress/videos
             cypress/results
             coverage
+            ${{ inputs.split-file }}
           if-no-files-found: ignore
 
   # the N parallel Component testing jobs we create
