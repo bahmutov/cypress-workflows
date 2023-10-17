@@ -452,6 +452,12 @@ jobs:
             --output ${{ inputs.split-file }} \
             --set-gha-output merged-timings
 
+      - name: Print timings 🖨️
+        run: |
+          echo off
+          echo Merged timings
+          echo '${{ steps.merge.outputs.merged-timings }}'
+
       - uses: actions/upload-artifact@v3
         with:
           name: merged-split-file
