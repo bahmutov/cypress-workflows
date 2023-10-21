@@ -179,7 +179,51 @@ The workflows allow passing pretty much all [Cypress GH Action](https://github.c
 
 ## Coming split spec durations
 
-If you are using `cypress-split` and the split workflow, you can generate timings for each spec and combine them into a single file. That file can then be used to split the specs more efficiently than alphabetically.
+If you are using `cypress-split` and the split workflow, you can generate timings for each spec and combine them into a single file. That file can then be used to split the specs more efficiently than alphabetically. You can even commit the file back to the repo using the same GitHub Token. See the example in [bahmutov/cypress-split-timings-example](bahmutov/cypress-split-timings-example).
+
+```yml
+name: split
+on:
+  # launch this workflow from GitHub Actions page
+  workflow_dispatch:
+jobs:
+  split:
+    # https://github.com/bahmutov/cypress-workflows
+    uses: bahmutov/cypress-workflows/.github/workflows/split.yml@v2
+    with:
+      nE2E: 2
+      # use timings to split E2E specs across 2 machines efficiently
+      split-file: 'timings.json'
+
+  # this job grab the output for the `split` workflow
+  # and writes it into a JSON file "timings.json"
+  # and then commits the updated file to the repository
+  commit-updated-timings:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-22.04
+    needs: split
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v4
+
+      - name: Show merged timings 🖨️
+        run: |
+          echo off
+          echo '${{ needs.split.outputs.merged-timings }}'
+
+      - name: Write updated timings 💾
+        # pretty-print json string into a file
+        run: echo '${{ toJson(fromJson(needs.split.outputs.merged-timings)) }}' > timings.json
+
+      - name: Commit changed spec timings ⏱️
+        # https://github.com/stefanzweifel/git-auto-commit-action
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Updated spec timings
+          branch: main
+          file_pattern: timings.json
+```
+
 
 ## Versions
 
