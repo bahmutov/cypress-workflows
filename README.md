@@ -3,7 +3,7 @@
 
 Call these workflows from your GitHub Action workflows, a single line (with parameters) let's you run N parallel test jobs without any configuration.
 
-🎓 Covered in my course [Testing The Swag Store](https://cypress.tips/courses/swag-store)
+🎓 Covered in my course [Testing The Swag Store](https://cypress.tips/courses/swag-store) and [Cypress-split plugin](https://cypress.tips/courses/cypress-split)
 
 ## Example
 
@@ -272,6 +272,10 @@ jobs:
 - [Run Cypress Specs In Parallel For Free](https://glebbahmutov.com/blog/cypress-parallel-free/)
 - [Trigger Selected Cypress Specs Using GitHub Actions](https://glebbahmutov.com/blog/trigger-cypress-specs/)
 - [Run Cypress Specs In Parallel For Free Using Spec Timings](https://glebbahmutov.com/blog/cypress-parallel-free-based-on-timings/)
+
+## Videos
+
+- [Simplify Cypress Parallel Workflow With A Reusable cypress-split Workflow](https://youtu.be/HWePftvroI4)
 
 ## Debugging
 
