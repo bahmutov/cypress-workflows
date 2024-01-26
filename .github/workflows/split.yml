@@ -186,7 +186,7 @@ jobs:
       - name: Checkout 🛎
         uses: actions/checkout@v4
       - name: Install deps 📦
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           runTests: false
       - name: Before run 🧺
@@ -213,7 +213,7 @@ jobs:
 
       # these containers will load balance all found tests among themselves
       - name: Cypress tests 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         # pass the machine index and the total number
         # https://github.com/bahmutov/cypress-split
         env:
@@ -283,7 +283,7 @@ jobs:
 
       # these containers will load balance all found tests among themselves
       - name: Cypress tests 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         # pass the machine index and the total number
         # https://github.com/bahmutov/cypress-split
         env:
@@ -335,7 +335,7 @@ jobs:
       - name: Checkout 🛎
         uses: actions/checkout@v4
       - name: Install dependencies 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           runTests: false
       # https://github.com/actions/download-artifact
@@ -393,7 +393,7 @@ jobs:
       - name: Checkout 🛎
         uses: actions/checkout@v4
       - name: Install dependencies 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           runTests: false
       # https://github.com/actions/download-artifact
@@ -428,7 +428,7 @@ jobs:
       - name: Checkout 🛎
         uses: actions/checkout@v4
       - name: Install dependencies 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           runTests: false
       # https://github.com/actions/download-artifact
