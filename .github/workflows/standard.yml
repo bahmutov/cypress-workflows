@@ -198,7 +198,7 @@ jobs:
       # in a single test artifact so that relative paths work
       # capture screenshots, videos, Mochawesome reports
       # https://github.com/actions/upload-artifact
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: ${{ inputs.store-artifacts && always() }}
         with:
           name: cypress-results
