@@ -89,6 +89,10 @@ on:
         description: 'Provide a specific specs to run'
         type: string
         required: false
+      skip-spec:
+        description: 'Provide a list of specs to NOT run'
+        type: string
+        required: false
       project:
         description: 'Path of project to run'
         type: string
@@ -222,6 +226,7 @@ jobs:
           SPLIT_FILE: '${{ inputs.split-file }}'
           # pass the custom list of specs if needed
           SPEC: '${{ inputs.spec }}'
+          SKIP_SPEC: '${{ inputs.skip-spec }}'
           # pass the DEBUG environment variable
           DEBUG: ${{ inputs.debug }}
         # pass the rest of the commands via Cypress GH Action
@@ -293,6 +298,7 @@ jobs:
           SPLIT_INDEX: ${{ strategy.job-index }}
           # pass the custom list of specs if needed
           SPEC: '${{ inputs.spec }}'
+          SKIP_SPEC: '${{ inputs.skip-spec }}'
           # pass the DEBUG environment variable
           DEBUG: ${{ inputs.debug }}
         # pass the rest of the commands via Cypress GH Action
