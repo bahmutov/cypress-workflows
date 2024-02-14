@@ -220,6 +220,8 @@ jobs:
           SPLIT: ${{ strategy.job-total }}
           SPLIT_INDEX: ${{ strategy.job-index }}
           SPLIT_FILE: '${{ inputs.split-file }}'
+          # pass the custom list of specs if needed
+          SPEC: '${{ inputs.spec }}'
           # pass the DEBUG environment variable
           DEBUG: ${{ inputs.debug }}
         # pass the rest of the commands via Cypress GH Action
@@ -289,6 +291,8 @@ jobs:
         env:
           SPLIT: ${{ strategy.job-total }}
           SPLIT_INDEX: ${{ strategy.job-index }}
+          # pass the custom list of specs if needed
+          SPEC: '${{ inputs.spec }}'
           # pass the DEBUG environment variable
           DEBUG: ${{ inputs.debug }}
         # pass the rest of the commands via Cypress GH Action
