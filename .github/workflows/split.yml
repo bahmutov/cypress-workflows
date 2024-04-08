@@ -349,7 +349,7 @@ jobs:
         with:
           runTests: false
       # https://github.com/actions/download-artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         # download all test results artifacts from the previous jobs
         # it would be nice to download only the split jobs test artifacts
         # but cannot specify the pattern of the test artifacts yet
@@ -407,7 +407,7 @@ jobs:
         with:
           runTests: false
       # https://github.com/actions/download-artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         # download all test results artifacts from the previous jobs
         # it would be nice to download only the split jobs test artifacts
         # but cannot specify the pattern of the test artifacts yet
@@ -442,7 +442,7 @@ jobs:
         with:
           runTests: false
       # https://github.com/actions/download-artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         # download all test results artifacts from the previous jobs
         # it would be nice to download only the split jobs test artifacts
         # but cannot specify the pattern of the test artifacts yet
