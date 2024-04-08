@@ -174,7 +174,7 @@ jobs:
         run: echo "$WORKFLOW_INPUTS"
 
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # because of "record" and "parallel" parameters
       # these containers will load balance all found tests among themselves

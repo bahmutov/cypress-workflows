@@ -155,7 +155,7 @@ jobs:
         run: echo "$WORKFLOW_INPUTS"
 
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Cypress tests 🧪
         # https://github.com/cypress-io/github-action
