@@ -134,6 +134,30 @@ See the example in [bahmutov/cy-report-example](https://github.com/bahmutov/cy-r
 
 ![Merge reports job](./images/ci1.png)
 
+**Warning:** make sure the reporter options are shown as above, including `json: true`. For example, you might accidentally overwrite the reporter in the `e2e` block:
+
+```js
+export default defineConfig({
+  // https://github.com/adamgruber/mochawesome
+  reporter: 'mochawesome',
+  // all good
+  reporterOptions: {
+    useInlineDiffs: true,
+    embeddedScreenshots: true,
+    reportDir: 'cypress/results',
+    reportFilename: '[name].html',
+    overwrite: true,
+    html: true,
+    json: true,
+  },
+  e2e: {
+    baseUrl: 'http://localhost:3000',
+    // 🚨 Oops, wrong reporter for merging
+    reporter: 'cypress-junit-reporter',
+  }
+})
+```
+
 ### Combine code coverage
 
 If you use [@bahmutov/cypress-code-coverage](https://github.com/bahmutov/cypress-code-coverage) you can combine the coverage from each split run into a single report
