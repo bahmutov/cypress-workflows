@@ -141,7 +141,7 @@ on:
 
 jobs:
   prepare:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     # explicitly set the output of this job
     # so that other jobs can use it
     outputs:
@@ -162,7 +162,7 @@ jobs:
   # https://github.com/cypress-io/github-action#parallel
   test:
     needs: prepare
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix: ${{fromJSON(needs.prepare.outputs.matrix)}}

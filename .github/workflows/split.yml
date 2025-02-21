@@ -158,7 +158,7 @@ on:
         value: ${{ jobs.merge-split-timings.outputs.timings }}
 jobs:
   prepare:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     # explicitly set the output of this job
     # so that other jobs can use it
     outputs:
@@ -201,7 +201,7 @@ jobs:
   e2eTests:
     if: ${{ inputs.nE2E > 0 }}
     needs: prepare
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.prepare.outputs.matrixE2E) }}
@@ -274,7 +274,7 @@ jobs:
   componentTests:
     if: ${{ inputs.nComponent > 0 }}
     needs: prepare
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.prepare.outputs.matrixComponent) }}
@@ -340,7 +340,7 @@ jobs:
   merge-reports:
     if: ${{ inputs.store-artifacts && inputs.marge && always() }}
     needs: [e2eTests, componentTests]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
@@ -398,7 +398,7 @@ jobs:
   merge-coverage:
     if: ${{ inputs.store-artifacts && inputs.coverage && always() }}
     needs: [e2eTests, componentTests]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
@@ -433,7 +433,7 @@ jobs:
     needs: [e2eTests]
     outputs:
       timings: ${{ steps.merge.outputs.merged-timings }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
