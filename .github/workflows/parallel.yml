@@ -174,12 +174,12 @@ jobs:
         run: echo "$WORKFLOW_INPUTS"
 
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # because of "record" and "parallel" parameters
       # these containers will load balance all found tests among themselves
       - name: Cypress tests 🧪
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           record: true
           parallel: true

@@ -188,9 +188,9 @@ jobs:
       # by installing dependencies once
       # we cache them
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Install deps 📦
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           runTests: false
       - name: Before run 🧺
@@ -213,11 +213,11 @@ jobs:
         run: echo "$WORKFLOW_INPUTS"
 
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # these containers will load balance all found tests among themselves
       - name: Cypress tests 🧪
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         # pass the machine index and the total number
         # https://github.com/bahmutov/cypress-split
         env:
@@ -258,7 +258,7 @@ jobs:
       # in a single test artifact so that relative paths work
       # capture screenshots, videos, Mochawesome reports, coverage folder
       # https://github.com/actions/upload-artifact
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: ${{ inputs.store-artifacts && always() }}
         with:
           name: cypress-split-results-e2e-${{ strategy.job-index }}
@@ -286,11 +286,11 @@ jobs:
         run: echo "$WORKFLOW_INPUTS"
 
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # these containers will load balance all found tests among themselves
       - name: Cypress tests 🧪
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         # pass the machine index and the total number
         # https://github.com/bahmutov/cypress-split
         env:
@@ -326,7 +326,7 @@ jobs:
       # in a single test artifact so that relative paths work
       # capture screenshots, videos, Mochawesome reports, coverage folder
       # https://github.com/actions/upload-artifact
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: ${{ inputs.store-artifacts && always() }}
         with:
           name: cypress-split-results-component-${{ strategy.job-index }}
@@ -343,13 +343,13 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Install dependencies 🧪
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           runTests: false
       # https://github.com/actions/download-artifact
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         # download all test results artifacts from the previous jobs
         # it would be nice to download only the split jobs test artifacts
         # but cannot specify the pattern of the test artifacts yet
@@ -390,7 +390,7 @@ jobs:
             --reportDir mochawesome/results \
             --reportFilename index.html
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: merged-mochawesome-report
           path: mochawesome
@@ -401,13 +401,13 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Install dependencies 🧪
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           runTests: false
       # https://github.com/actions/download-artifact
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         # download all test results artifacts from the previous jobs
         # it would be nice to download only the split jobs test artifacts
         # but cannot specify the pattern of the test artifacts yet
@@ -422,7 +422,7 @@ jobs:
         # https://github.com/bahmutov/cypress-code-coverage
         run: npx cc-merge split-results
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: merged-coverage
           path: coverage
@@ -436,13 +436,13 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Install dependencies 🧪
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           runTests: false
       # https://github.com/actions/download-artifact
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         # download all test results artifacts from the previous jobs
         # it would be nice to download only the split jobs test artifacts
         # but cannot specify the pattern of the test artifacts yet
@@ -471,7 +471,7 @@ jobs:
           echo Merged timings
           echo '${{ steps.merge.outputs.merged-timings }}'
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: merged-split-file
           path: '${{ inputs.split-file }}'
