@@ -155,11 +155,11 @@ jobs:
         run: echo "$WORKFLOW_INPUTS"
 
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Cypress tests 🧪
         # https://github.com/cypress-io/github-action
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           record: ${{ inputs.record }}
           config: ${{ inputs.config }}
@@ -198,7 +198,7 @@ jobs:
       # in a single test artifact so that relative paths work
       # capture screenshots, videos, Mochawesome reports
       # https://github.com/actions/upload-artifact
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: ${{ inputs.store-artifacts && always() }}
         with:
           name: cypress-results
